@@ -1,9 +1,14 @@
 #!/usr/bin/python3
 """file_storage.py test cases"""
 import unittest
+import json
 import os
+import models
+from datetime import datetime
 from models.engine.file_storage import FileStorage
 from models.base_model import BaseModel
+from models.user import User
+
 
 class TestFileStorage(unittest.TestCase):
     """FileStorage class test cases"""
@@ -53,13 +58,15 @@ class TestFileStorage(unittest.TestCase):
         self.assertEqual(base_model.id, new_storage.all()[model_key].id)
 
     def test_inequality_of_updated_at_before_and_after_save(self):
-        """Confirm inequality of 'updated_at' attribute before and after 'save' method"""
+        """Confirm inequality of 'updated_at' attribute before
+        and after 'save' method"""
         base_model = BaseModel()
         self.storage.new(base_model)
         old_updated_at = base_model.updated_at
         self.storage.save()
         new_updated_at = base_model.updated_at
         self.assertNotEqual(old_updated_at, new_updated_at)
+
 
 if __name__ == '__main__':
     unittest.main()
