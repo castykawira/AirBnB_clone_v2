@@ -7,7 +7,6 @@ import models
 from datetime import datetime
 from models.engine.file_storage import FileStorage
 from models.base_model import BaseModel
-from models.user import User
 
 
 class TestFileStorage(unittest.TestCase):
@@ -63,7 +62,11 @@ class TestFileStorage(unittest.TestCase):
         base_model = BaseModel()
         self.storage.new(base_model)
         old_updated_at = base_model.updated_at
+
+        base_model.some_attribute = some_value
+
         self.storage.save()
+
         new_updated_at = base_model.updated_at
         self.assertNotEqual(old_updated_at, new_updated_at)
 

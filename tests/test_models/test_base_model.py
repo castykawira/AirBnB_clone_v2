@@ -1,9 +1,10 @@
 #!/usr/bin/python3
 """Test cases BaseModel class"""
-
 import unittest
+import os
+import models
 from models.base_model import BaseModel
-from datetime import datetime
+from datetime import datetime, timedelta
 
 
 class TestBaseModel(unittest.TestCase):
@@ -31,19 +32,33 @@ class TestBaseModel(unittest.TestCase):
         self.assertIsInstance(BaseModel(), object)
 
     def test_printing_instance_equals_string_format(self):
-        """Check if the printing the instance of BaseModel equals “[<class name>] (<self.id>) <self.__dict__>” string format"""
+        """Check if the printing the instance of BaseModel equals
+        “[<class name>] (<self.id>) <self.__dict__>” string format"""
         base_model = BaseModel()
-        expected_str = f"[{base_model.__class__.__name__}] ({base_model.id}) {base_model.__dict__}"
+        expected_str = (
+                f"[{base_model.__class__.__name__}] "
+                f"({base_model.id}) {base_model.__dict__}"
+                )
         self.assertEqual(str(base_model), expected_str)
 
     def test_inequality_of_created_at_and_updated_at_after_save(self):
-        """Check the inequality of created_at and updated_at attributes after using the save(self) method"""
+        """Check the inequality of created_at and updated_at attributes
+        after using the save(self) method"""
         base_model = BaseModel()
         old_created_at = base_model.created_at
         old_updated_at = base_model.updated_at
         base_model.save()
-        self.assertNotEqual(old_created_at, base_model.created_at)
-        self.assertNotEqual(old_updated_at, base_model.updated_at)
+
+        microsecond_difference = timedelta(microseconds=1)
+
+        self.assertGreater(
+                base_model.created_at,
+                old_created_at + microsecond_difference
+                )
+        self.assertGreater(
+                base_model.updated_at,
+                old_updated_at + microsecond_difference
+                )
 
     def test_inequality_of_greater_than_two_objects_ids(self):
         """Inequality of greater than 2 different objects ids"""
@@ -60,7 +75,8 @@ class TestBaseModel(unittest.TestCase):
         self.assertLess(base_model.created_at, datetime.now())
 
     def test_inequality_of_updated_at_before_and_after_save(self):
-        """Check the inequality of updated_at and updated_at attributes before and after using the save(self) method"""
+        """Check the inequality of updated_at and updated_at attributes
+        before and after using the save(self) method"""
         base_model = BaseModel()
         old_updated_at = base_model.updated_at
         base_model.save()
@@ -72,21 +88,34 @@ class TestBaseModel(unittest.TestCase):
         self.assertEqual(len(str(base_model.id)), 36)
 
     def test_datetime_format_in_to_dict(self):
-        """Check if created_at and updated_at are in the “%Y-%m-%dT%H:%M:%S.%f” ISO format in the dictionary returned from to_dict method"""
+        """Check if created_at and updated_at are in the
+        ISO format in the dictionary returned from to_dict method"""
         base_model = BaseModel()
         obj_dict = base_model.to_dict()
-        self.assertEqual(datetime.strptime(obj_dict['created_at'], "%Y-%m-%dT%H:%M:%S.%f"), base_model.created_at)
-        self.assertEqual(datetime.strptime(obj_dict['updated_at'], "%Y-%m-%dT%H:%M:%S.%f"), base_model.updated_at)
 
-    def test_updated_at_after_save_is_greater_than_old_updated_at(self):
-        """Check that the updated_at after using the save method is greater than the old updated_at"""
+        created_at_format = "%Y-%m-%dT%H:%M:%S.%f"
+
+        self.assertEqual(
+                datetime.strptime(obj_dict['created_at'], created_at_format),
+                base_model.created_at
+                )
+
+        self.assertEqual(
+                datetime.strptime(obj_dict['updated_at'], created_at_format),
+                base_model.updated_at
+                )
+
+        def test_updated_at_after_save_is_greater_than_old_updated_at(self):
+            """Check that the updated_at after using the save method
+        is greater than the old updated_at"""
         base_model = BaseModel()
         old_updated_at = base_model.updated_at
         base_model.save()
         self.assertGreater(base_model.updated_at, old_updated_at)
 
     def test_to_dict_method_returns_correct_keys_and_values(self):
-        """Check if to_dict method returned a dictionary that has the correct keys and values"""
+        """Check if to_dict method returned a dictionary
+        that has the correct keys and values"""
         base_model = BaseModel()
         obj_dict = base_model.to_dict()
         self.assertIn('id', obj_dict)
@@ -102,7 +131,7 @@ class TestBaseModel(unittest.TestCase):
         self.assertIsInstance(base_model.updated_at, datetime)
 
     def test_to_dict_method_returns_dictionary(self):
-        """Test the to_dict method, e.g., check if instance of returned obj is a dictionary, check if the returned obj has a key as a classname (__class__) like assertIn(‘__class__’, obj_dict)"""
+        """Test the to_dict method"""
         base_model = BaseModel()
         obj_dict = base_model.to_dict()
         self.assertIsInstance(obj_dict, dict)
