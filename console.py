@@ -1,5 +1,5 @@
-#!/usr/bin/python3
-
+#!/usr/bin/python3i
+"""The definition of the HBnB console."""
 import cmd
 import re
 import json
