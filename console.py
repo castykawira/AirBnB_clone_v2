@@ -12,12 +12,6 @@ class HBNBCommand(cmd.Cmd):
     intro = "Welcome to HBnB."
     prompt = "(hbnb) "
 
-    CLASSES = {
-        'BaseModel': BaseModel,
-        'User': User,  # Added User class here
-        # Add other classes as needed
-    }
-
     def emptyline(self):
         pass
 
