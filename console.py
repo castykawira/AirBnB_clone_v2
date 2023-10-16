@@ -131,4 +131,5 @@ class HBNBCommand(cmd.Cmd):
 
 
 if __name__ == "__main__":
+    cmd_instance = HBNBCommand()
     cmd_instance.cmdloop()
