@@ -11,12 +11,12 @@ from models.base_model import BaseModel
 class HBNBCommand(cmd.Cmd):
     intro = "Welcome to HBnB."
     prompt = "(hbnb) "
-
+    
     def emptyline(self):
         pass
 
     def do_create(self, line):
-        """Create a new instance of BaseModel, save it, and print the id."""
+        """Create a new instance of BaseModel."""
         if not line:
             print("** class name missing **")
         elif line not in BaseModel.__subclasses__():
@@ -64,7 +64,7 @@ class HBNBCommand(cmd.Cmd):
                 storage.save()
 
     def do_all(self, line):
-        """Print all string representations of instances."""
+        """Print all string representations of instances based on class name or all."""
         args = line.split()
         obj_list = []
         obj_dict = storage.all()
@@ -128,7 +128,6 @@ class HBNBCommand(cmd.Cmd):
 
     def postloop(self):
         print("Exiting the command-line interpreter. Goodbye!")
-
 
 if __name__ == "__main__":
     cmd_instance = HBNBCommand()
