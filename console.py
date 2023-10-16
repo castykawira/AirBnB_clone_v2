@@ -10,7 +10,7 @@ from models.base_model import BaseModel
 class HBNBCommand(cmd.Cmd):
     intro = "Welcome to My Command Interpreter. Type 'help' for a list of available commands."
     prompt = "(hbnb) "
-
+    
     def emptyline(self):
         pass
 
@@ -109,9 +109,25 @@ class HBNBCommand(cmd.Cmd):
                 else:
                     print("** attribute doesn't exist **")
 
+    def do_exit(self, line):
+        """Exit the command-line interpreter."""
+        return True
+
+    def do_quit(self, line):
+        """Exit the command-line interpreter."""
+        return self.do_exit(line)
+
+    def help_exit(self):
+        """Exit the command-line interpreter."""
+        print("Exits the command-line interpreter.")
+
+    def help_quit(self):
+        """Exit the command-line interpreter."""
+        print("Exits the command-line interpreter.")
+
     def postloop(self):
-        print()
+        print("Exiting the command-line interpreter. Goodbye!")
 
 if __name__ == "__main__":
-    HBNBCommand().cmdloop()
-
+    cmd_instance = HBNBCommand()
+    cmd_instance.cmdloop()
