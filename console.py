@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 
 import cmd
+import re
 import json
 import datetime
 import uuid
