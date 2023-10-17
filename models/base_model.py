@@ -46,12 +46,7 @@ class BaseModel:
         models.storage.save()
 
     def to_dict(self):
-        """
-        Produces a dictionary with all keys/values from the instance's __dict__
-
-        Returns:
-            dict: Dictionary representation of the instance.
-        """
+        """Converts the object to a dictionary"""
         obj_dict = self.__dict__.copy()
         obj_dict['__class__'] = self.__class__.__name__
         obj_dict['created_at'] = self.created_at.isoformat()

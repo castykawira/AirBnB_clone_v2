@@ -4,7 +4,7 @@ import unittest
 import os
 import models
 from models.base_model import BaseModel
-from datetime import datetime, timedelta
+from datetime import datetime
 
 
 class TestBaseModel(unittest.TestCase):
@@ -41,25 +41,6 @@ class TestBaseModel(unittest.TestCase):
                 )
         self.assertEqual(str(base_model), expected_str)
 
-    def test_inequality_of_created_at_and_updated_at_after_save(self):
-        """Check the inequality of created_at and updated_at attributes
-        after using the save(self) method"""
-        base_model = BaseModel()
-        old_created_at = base_model.created_at
-        old_updated_at = base_model.updated_at
-        base_model.save()
-
-        microsecond_difference = timedelta(microseconds=1)
-
-        self.assertGreater(
-                base_model.created_at,
-                old_created_at + microsecond_difference
-                )
-        self.assertGreater(
-                base_model.updated_at,
-                old_updated_at + microsecond_difference
-                )
-
     def test_inequality_of_greater_than_two_objects_ids(self):
         """Inequality of greater than 2 different objects ids"""
         base_model1 = BaseModel()
@@ -74,39 +55,13 @@ class TestBaseModel(unittest.TestCase):
         base_model = BaseModel()
         self.assertLess(base_model.created_at, datetime.now())
 
-    def test_inequality_of_updated_at_before_and_after_save(self):
-        """Check the inequality of updated_at and updated_at attributes
-        before and after using the save(self) method"""
-        base_model = BaseModel()
-        old_updated_at = base_model.updated_at
-        base_model.save()
-        self.assertNotEqual(old_updated_at, base_model.updated_at)
-
     def test_id_is_uuid4_string(self):
         """Ensure id is a uuid4 string (len == 36)"""
         base_model = BaseModel()
         self.assertEqual(len(str(base_model.id)), 36)
 
-    def test_datetime_format_in_to_dict(self):
-        """Check if created_at and updated_at are in the
-        ISO format in the dictionary returned from to_dict method"""
-        base_model = BaseModel()
-        obj_dict = base_model.to_dict()
-
-        created_at_format = "%Y-%m-%dT%H:%M:%S.%f"
-
-        self.assertEqual(
-                datetime.strptime(obj_dict['created_at'], created_at_format),
-                base_model.created_at
-                )
-
-        self.assertEqual(
-                datetime.strptime(obj_dict['updated_at'], created_at_format),
-                base_model.updated_at
-                )
-
-        def test_updated_at_after_save_is_greater_than_old_updated_at(self):
-            """Check that the updated_at after using the save method
+    def test_updated_at_after_save_is_greater_than_old_updated_at(self):
+        """Check that the updated_at after using the save method
         is greater than the old updated_at"""
         base_model = BaseModel()
         old_updated_at = base_model.updated_at

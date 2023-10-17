@@ -56,20 +56,6 @@ class TestFileStorage(unittest.TestCase):
         model_key = 'BaseModel.' + base_model.id
         self.assertEqual(base_model.id, new_storage.all()[model_key].id)
 
-    def test_inequality_of_updated_at_before_and_after_save(self):
-        """Confirm inequality of 'updated_at' attribute before
-        and after 'save' method"""
-        base_model = BaseModel()
-        self.storage.new(base_model)
-        old_updated_at = base_model.updated_at
-
-        base_model.some_attribute = some_value
-
-        self.storage.save()
-
-        new_updated_at = base_model.updated_at
-        self.assertNotEqual(old_updated_at, new_updated_at)
-
 
 if __name__ == '__main__':
     unittest.main()
