@@ -7,9 +7,14 @@ from models.base_model import BaseModel
 class FileStorage:
     """Serializes and deserializes object instances to and from a JSON file"""
 
+     __file_path = "file.json"
+
+    def __init__(self):
+        self.__objects = {}
+
     def all(self):
         """Returns the dictionary containing __objects"""
-        return FileStorage.__objects
+        return self.__objects
 
     def new(self, obj):
         """Associates __objects attribute using key <obj class name>.id"""

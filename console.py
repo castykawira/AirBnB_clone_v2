@@ -43,10 +43,10 @@ class HBNBCommand(cmd.Cmd):
         """Overwrites default emptyline method"""
     pass
 
-    def precmd(self, line):
-        """Refine the command line for advanced syntax to enhance structure"""
-        cmd_args = line.split()
-        if cmd_args and cmd_args[0] in self.dot_cmds:
+def precmd(self, line):
+    """Refine the command line for advanced syntax to enhance structure"""
+    cmd_args = line.split()
+    if cmd_args and cmd_args[0] in self.dot_cmds:
 
             if len(cmd_args) > 1:
                 key_value_pairs = [param.split('=') for param in cmd_args[1:]]
@@ -60,7 +60,7 @@ class HBNBCommand(cmd.Cmd):
             else:
                 print("Missing parameters for advanced command syntax.")
 
-        return line
+                return line
 
     def do_create(self, arg):
         """Creates new instances of BaseModel with given parameters"""
@@ -117,8 +117,9 @@ class HBNBCommand(cmd.Cmd):
             obj_dict = storage.all()
             if obj_key in obj_dict:
                 print(obj_dict[obj_key])
-        else:
-            print("** no instance found **")
+
+            else:
+                print("** no instance found **")
 
     def do_destroy(self, line):
         """Deletes instances based on class name and id"""
@@ -135,9 +136,9 @@ class HBNBCommand(cmd.Cmd):
             obj_dict = storage.all()
             if obj_key in obj_dict:
                 del obj_dict[obj_key]
-            storage.save()
-        else:
-            print("** no instance found **")
+                storage.save()
+            else:
+                print("** no instance found **")
 
     def do_all(self, line):
         """Prints string representations of instances based on class name"""
@@ -159,32 +160,32 @@ class HBNBCommand(cmd.Cmd):
 
     def do_update(self, line):
         """Updates an instance with a new attribute value"""
-        args = line.split()
-        if not args:
-            print("** class name missing **")
-        elif args[0] not in BaseModel.__subclasses__():
-            print("** class doesn't exist **")
-        elif len(args) < 2:
-            print("** instance id missing **")
-        else:
-            obj_key = args[0] + "." + args[1]
-            obj_dict = storage.all()
-            if obj_key in obj_dict:
-                obj = obj_dict[obj_key]
-                if len(args) < 3:
-                    print("** attribute name missing **")
-                elif len(args) < 4:
-                    print("** value missing **")
+    args = line.split()
+    if not args:
+        print("** class name missing **")
+    elif args[0] not in BaseModel.__subclasses__():
+        print("** class doesn't exist **")
+    elif len(args) < 2:
+        print("** instance id missing **")
+    else:
+        obj_key = args[0] + "." + args[1]
+        obj_dict = storage.all()
+        if obj_key in obj_dict:
+            obj = obj_dict[obj_key]
+            if len(args) < 3:
+                print("** attribute name missing **")
+            elif len(args) < 4:
+                print("** value missing **")
+            else:
+                attr_name = args[2]
+                attr_value = args[3]
+                if hasattr(obj, attr_name):
+                    setattr(obj, attr_name, eval(attr_value))
+                    obj.save()
                 else:
-                    attr_name = args[2]
-                    attr_value = args[3]
-                    if hasattr(obj, attr_name):
-                        setattr(obj, attr_name, eval(attr_value))
-                        obj.save()
-                    else:
-                        print("** attribute doesn't exist **")
-                    else:
-                        print("** no instance found **")
+                    print("** attribute doesn't exist **")
+        else:
+            print("** no instance found **")
 
     def do_quit(self, line):
         """Exits the console"""
