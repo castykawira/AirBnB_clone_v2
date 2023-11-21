@@ -25,7 +25,7 @@ git clone https://github.com/your-username/AirBnB_clone.git
 
 2. Change directory to get to the project
   
-  cd AirBnB_clone
+  cd AirBnB_clone_v2
 
 3. Run the console using the command
 
