@@ -1,20 +1,29 @@
 #!/usr/bin/python3
 """Defines the FileStorage class"""
+
 import json
 from models.base_model import BaseModel
+from models.amenity import Amenity
+from models.city import City
+from models.review import Review
+from models.place import Place
+from models.user import User
+from models.state import State
 
 
 class FileStorage:
     """Serializes and deserializes object instances to and from a JSON file"""
 
-     __file_path = "file.json"
+    __file_path = "file.json"
+    __objects = {}
 
-    def __init__(self):
-        self.__objects = {}
-
-    def all(self):
-        """Returns the dictionary containing __objects"""
-        return self.__objects
+    def all(self, cls=None):
+        """Returns a dictionary of objects of a specific class"""
+        if cls is None:
+            return self.__objects
+        else:
+            return {k: v for k, v in self.__objects.items()
+                    if isinstance(v, cls)}
 
     def new(self, obj):
         """Associates __objects attribute using key <obj class name>.id"""
@@ -41,3 +50,11 @@ class FileStorage:
                     self.new(eval(class_name)(**obj_dict))
         except FileNotFoundError:
             return
+
+    def delete(self, obj=None):
+        """Deletes an object from __objects if it exists"""
+        if obj is not None:
+            key = "{}.{}".format(obj.__class__.__name__, obj.id)
+            if key in self.__objects:
+                del self.__objects[key]
+                self.save()
