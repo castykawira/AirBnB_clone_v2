@@ -13,10 +13,12 @@ def hello_hbnb():
     """Display 'Hello HBNB!' when the root path is accessed."""
     return ('Hello HBNB!')
 
+
 @app.route('/hbnb', strict_slashes=False)
 def hbnb():
     """Display 'HBNB' when the /hbnb path is accessed."""
     return ('HBNB')
+
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000, debug=None)
