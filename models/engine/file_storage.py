@@ -51,6 +51,10 @@ class FileStorage:
         except FileNotFoundError:
             return
 
+    def close(self):
+        """Deserialize the JSON file to objects"""
+        self.reload()
+
     def delete(self, obj=None):
         """Deletes an object from __objects if it exists"""
         if obj is not None:
