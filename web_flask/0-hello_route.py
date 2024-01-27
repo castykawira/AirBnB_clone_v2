@@ -1,17 +1,20 @@
 #!/usr/bin/python3
 """
-This script defines the routes for a Flask web application
+Starts a Flask web application
 """
-
 from flask import Flask
+
 
 app = Flask(__name__)
 
 
-@app.route('/', strict_slashes=False)
+@app.route('/airbnb-onepage/', strict_slashes=False)
 def hello_hbnb():
-    """Display 'Hello HBNB!' when the root path is accessed."""
-    return ('Hello HBNB!')
+    """
+    Display 'Hello HBNB!' when the root path is accessed
+    """
+    return 'Hello HBNB, AirBnB one-page!'
 
-if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=5000, debug=None)
+
+if __name__ == '__main__':
+    app.run(port='5000', host='0.0.0.0')
